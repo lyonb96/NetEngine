@@ -68,17 +68,15 @@
             }
 
             // Open the file the asset is in
-            using var reader = new BinaryReader(File.OpenRead(assetManifestData.Path));
-            // Determine how many bytes to read
-            var bytesToRead = assetManifestData.SizeBytes > 0 ? assetManifestData.SizeBytes : (int)reader.BaseStream.Length;
-            // Generate a buffer
-            var buffer = new byte[bytesToRead];
-            // Read the data from the file
-            reader.Read(buffer, assetManifestData.OffsetBytes, bytesToRead);
+            using var stream = File.OpenRead(assetManifestData.Path);
+
+            // Seek to the asset position in the stream
+            stream.Seek(assetManifestData.OffsetBytes, SeekOrigin.Begin);
+            using var reader = new BinaryReader(stream);
 
             // Create the asset instance
             var asset = new TAssetType();
-            asset.LoadFromBinary(buffer);
+            asset.LoadFromBinary(reader);
 
             // Store it in the registry
             LoadedAssets[name] = asset;

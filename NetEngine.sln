@@ -3,15 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31424.327
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetEngine.Core", "NetEngine.Core\NetEngine.Core.csproj", "{71B5CEE6-AF8C-483B-8CAB-824CEB76E7CA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetEngine.Core", "NetEngine.Core\NetEngine.Core.csproj", "{71B5CEE6-AF8C-483B-8CAB-824CEB76E7CA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetEngine.Renderer", "NetEngine.Renderer\NetEngine.Renderer.csproj", "{AD958EC8-D8D0-41B3-930A-8E39DD579672}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetEngine.Renderer", "NetEngine.Renderer\NetEngine.Renderer.csproj", "{AD958EC8-D8D0-41B3-930A-8E39DD579672}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetEngine.Utilities", "NetEngine.Utilities\NetEngine.Utilities.csproj", "{4137F34E-6BD5-4480-B978-1C4926648EE1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetEngine.Utilities", "NetEngine.Utilities\NetEngine.Utilities.csproj", "{4137F34E-6BD5-4480-B978-1C4926648EE1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00.Core", "00.Core", "{C44A6F8A-94DE-4873-ACF1-2D00309F6846}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01.HardwareAbstraction", "01.HardwareAbstraction", "{69E38108-CDF2-4CDB-9F3E-F60426D8CBBC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "09.Tools", "09.Tools", "{98CDB080-5771-4671-BA81-48BA0E1B3093}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetEngine.Toolkit", "NetEngine.Toolkit\NetEngine.Toolkit.csproj", "{850EA655-CB2E-4B0D-BC64-D58E232B1B98}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,6 +35,10 @@ Global
 		{4137F34E-6BD5-4480-B978-1C4926648EE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4137F34E-6BD5-4480-B978-1C4926648EE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4137F34E-6BD5-4480-B978-1C4926648EE1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{850EA655-CB2E-4B0D-BC64-D58E232B1B98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{850EA655-CB2E-4B0D-BC64-D58E232B1B98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{850EA655-CB2E-4B0D-BC64-D58E232B1B98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{850EA655-CB2E-4B0D-BC64-D58E232B1B98}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -38,6 +46,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{AD958EC8-D8D0-41B3-930A-8E39DD579672} = {69E38108-CDF2-4CDB-9F3E-F60426D8CBBC}
 		{4137F34E-6BD5-4480-B978-1C4926648EE1} = {C44A6F8A-94DE-4873-ACF1-2D00309F6846}
+		{850EA655-CB2E-4B0D-BC64-D58E232B1B98} = {98CDB080-5771-4671-BA81-48BA0E1B3093}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4F814DF1-00D2-4668-A31F-0426358D7344}
