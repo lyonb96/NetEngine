@@ -3,6 +3,7 @@
     using System;
     using System.Diagnostics;
     using Renderer;
+    using Utilities;
 
     /// <summary>
     /// The core of NetEngine, which handles init, game loop, and shutdown.
@@ -23,6 +24,11 @@
         /// The window's renderer instance.
         /// </summary>
         private Renderer Renderer { get; set; }
+
+        /// <summary>
+        /// The game instance's asset manager
+        /// </summary>
+        private AssetManager AssetManager { get; set; }
 
         /// <summary>
         /// A Stopwatch for timing the update loop.
@@ -63,6 +69,14 @@
             Window = new NetEngineWindow();
             Window.Initialize();
             Renderer = Window.WindowRenderer;
+
+            // Start up the asset manager
+            AssetManager = new AssetManager();
+            AssetManager.Initialize();
+            Game.AssetManager = AssetManager;
+
+            // Call game start
+            Game.OnGameStart();
 
             // Begin running the main loop
             RunGameLoop();

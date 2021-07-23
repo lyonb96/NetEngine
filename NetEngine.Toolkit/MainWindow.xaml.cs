@@ -27,20 +27,14 @@ namespace NetEngine.Toolkit
         private string SelectedFile
         {
             get => _selectedFile;
-            set
-            {
-                SelectionTextBox.Text = _selectedFile = value;
-            }
+            set => SelectionTextBox.Text = _selectedFile = value;
         }
 
         private string _outputFile;
         public string OutputFile
         {
             get => _outputFile;
-            set
-            {
-                OutputTextBox.Text = _outputFile = value;
-            }
+            set => OutputTextBox.Text = _outputFile = value;
         }
 
         public MainWindow()
@@ -59,7 +53,7 @@ namespace NetEngine.Toolkit
 
         private void SelectOutputButton_Click(object sender, RoutedEventArgs e)
         {
-            var dialog = new OpenFileDialog();
+            var dialog = new SaveFileDialog();
             if (dialog.ShowDialog() ?? false)
             {
                 OutputFile = dialog.FileName;
@@ -99,6 +93,7 @@ namespace NetEngine.Toolkit
                 var pos = mesh.Vertices[i];
                 var norm = mesh.Normals[i];
                 var bitangent = mesh.HasTangentBasis ? mesh.BiTangents[i] : new Vector3D(0.0F);
+                var tangent = mesh.HasTangentBasis ? mesh.Tangents[i] : new Vector3D(0.0F);
                 // TODO: using normal, bitangent, and tangent to generate a tangent-space quaternion
                 var tangentSpace = new Quaternion();
                 var texCoord = mesh.HasTextureCoords(0)

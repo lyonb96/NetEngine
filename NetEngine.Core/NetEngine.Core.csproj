@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="System.Collections" Version="4.3.0" />
   </ItemGroup>
@@ -14,5 +18,9 @@
     <ProjectReference Include="..\NetEngine.Renderer\NetEngine.Renderer.csproj" />
     <ProjectReference Include="..\NetEngine.Utilities\NetEngine.Utilities.csproj" />
   </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="(D: &amp;&amp; mklink /d &quot;$(TargetDir)Assets&quot; &quot;$(ProjectDir)Assets&quot;) || exit 0" />
+  </Target>
 
 </Project>

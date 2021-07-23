@@ -354,3 +354,6 @@ MigrationBackup/
 
 # Ignore intermediate compilation files
 Intermediate/
+
+# Ignore assets to prevent a bunch of bloat and test files being put in the repo
+Assets/

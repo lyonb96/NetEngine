@@ -15,7 +15,9 @@
             <RowDefinition Height="40"/>
             <RowDefinition Height="40"/>
             <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
         <TextBox
             x:Name="SelectionTextBox"
@@ -26,7 +28,7 @@
             x:Name="SelectButton"
             Grid.Row="0"
             Grid.Column="1"
-            Content="Select"
+            Content="Select Input"
             Click="SelectButton_Click"/>
         <TextBox
             x:Name="OutputTextBox"
@@ -37,12 +39,12 @@
             x:Name="SelectOutputButton"
             Grid.Row="1"
             Grid.Column="1"
-            Content="Select"
+            Content="Select Output File"
             Click="SelectOutputButton_Click"/>
         <Button
             x:Name="ConvertButton"
-            Grid.Row="2"
-            Grid.Column="0"
+            Grid.Row="5"
+            Grid.Column="1"
             Content="Convert"
             Click="ConvertButton_Click"/>
     </Grid>

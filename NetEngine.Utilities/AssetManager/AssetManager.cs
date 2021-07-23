@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using Newtonsoft.Json;
 
     /// <summary>
     /// Handles loading assets and resolving their dependencies
@@ -34,6 +35,8 @@
         public void Initialize()
         {
             // Load manifest from json file
+            var manifestJson = File.ReadAllText(".\\Assets\\manifest.json");
+            Manifest = JsonConvert.DeserializeObject<AssetManifest>(manifestJson);
         }
 
         /// <summary>
@@ -68,7 +71,7 @@
             }
 
             // Open the file the asset is in
-            using var stream = File.OpenRead(assetManifestData.Path);
+            using var stream = File.OpenRead(Path.Combine("Assets", assetManifestData.Path));
 
             // Seek to the asset position in the stream
             stream.Seek(assetManifestData.OffsetBytes, SeekOrigin.Begin);
