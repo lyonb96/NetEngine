@@ -22,13 +22,17 @@
             Context = context;
         }
 
+        public void Initialize()
+        {
+            StaticMesh.GenerateStaticMeshVAO();
+        }
+
         /// <summary>
         /// Draws a full frame.
         /// </summary>
         public void Draw()
         {
             GL.Clear(ClearBufferMask.ColorBufferBit);
-
             Context.SwapBuffers();
         }
     }

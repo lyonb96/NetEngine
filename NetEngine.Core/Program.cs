@@ -1,6 +1,5 @@
 ﻿namespace NetEngine.Core
 {
-    using Renderer;
     using Utilities;
 
     class Program
@@ -19,7 +18,6 @@
 
         public void OnGameStart()
         {
-            var test = AssetManager.LoadAsset<StaticMesh>("TestMesh");
         }
     }
 }

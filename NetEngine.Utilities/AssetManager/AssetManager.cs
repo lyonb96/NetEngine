@@ -42,8 +42,8 @@
         /// <summary>
         /// Attempts to load an asset of the given name, if it is found in the manifest.
         /// </summary>
-        /// <typeparam name="TAssetType"></typeparam>
-        /// <param name="name"></param>
+        /// <typeparam name="TAssetType">The type of Asset to load.</typeparam>
+        /// <param name="name">The name of the asset to find in the manifest.</param>
         /// <returns></returns>
         public TAssetType LoadAsset<TAssetType>(string name)
             where TAssetType : IAsset, new()

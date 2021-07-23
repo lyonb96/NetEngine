@@ -32,7 +32,7 @@
         /// </summary>
         public void Initialize()
         {
-            // Make context current for the resize call
+            // Make context current for the resize call and render init
             Context.MakeCurrent();
 
             // Dispatch the resize event so listeners have the correct size
@@ -40,6 +40,7 @@
 
             // Build the renderer
             WindowRenderer = new Renderer(Context);
+            WindowRenderer.Initialize();
         }
     }
 

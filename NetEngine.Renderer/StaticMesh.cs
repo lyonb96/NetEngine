@@ -19,6 +19,26 @@
         /// </summary>
         internal int IndexBufferObject { get; set; }
 
+        /// <summary>
+        /// The VAO for static meshes
+        /// </summary>
+        internal static int StaticMeshVAO { get; private set; }
+
+        /// <summary>
+        /// Method used internally in the renderer to generate the VAO for static meshes
+        /// </summary>
+        internal static void GenerateStaticMeshVAO()
+        {
+            StaticMeshVAO = GL.GenVertexArray();
+            GL.BindVertexArray(StaticMeshVAO);
+            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
+            GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 2 * sizeof(float), 3 * sizeof(float));
+            GL.VertexAttribPointer(2, 4, VertexAttribPointerType.Float, false, 4 * sizeof(float), 5 * sizeof(float));
+            GL.EnableVertexAttribArray(0);
+            GL.EnableVertexAttribArray(1);
+            GL.EnableVertexAttribArray(2);
+        }
+
         public StaticMesh()
         { }
 
