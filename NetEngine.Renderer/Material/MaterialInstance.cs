@@ -99,9 +99,11 @@
         /// <inheritdoc/>
         public void LoadFromBinary(BinaryReader stream, AssetManager assetManager)
         {
-            // Get the name of the material
+            // Get the name of the material and resolve it
             var mat = stream.ReadString();
             BaseMaterial = assetManager.ResolveMaterial(mat);
+            // Load uniform values
+
         }
     }
 }
