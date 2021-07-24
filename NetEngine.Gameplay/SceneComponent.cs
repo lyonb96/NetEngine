@@ -29,6 +29,7 @@
         public SceneComponent(GameObject owner) : base(owner)
         {
             Children = new List<SceneComponent>();
+            Transform = new Transform();
         }
 
         /// <summary>
