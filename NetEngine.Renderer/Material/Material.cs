@@ -76,7 +76,7 @@
         #endregion
 
         /// <inheritdoc/>
-        public void LoadFromBinary(BinaryReader stream)
+        public void LoadFromBinary(BinaryReader stream, AssetManager assetManager)
         {
             // Get vertex and fragment shader source from the stream
             var vs = stream.ReadString();

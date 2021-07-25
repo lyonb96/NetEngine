@@ -43,7 +43,7 @@
         { }
 
         /// <inheritdoc/>
-        public void LoadFromBinary(BinaryReader stream)
+        public void LoadFromBinary(BinaryReader stream, AssetManager assetManager)
         {
             var versionFlag = stream.ReadByte();
             switch (versionFlag)

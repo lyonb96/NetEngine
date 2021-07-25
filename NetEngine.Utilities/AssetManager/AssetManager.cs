@@ -79,7 +79,7 @@
 
             // Create the asset instance
             var asset = new TAssetType();
-            asset.LoadFromBinary(reader);
+            asset.LoadFromBinary(reader, this);
 
             // Store it in the registry
             LoadedAssets[name] = asset;
