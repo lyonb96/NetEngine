@@ -7,6 +7,6 @@
         /// <summary>
         /// This object's unique identifier.
         /// </summary>
-        Guid UniqueID { get; set; }
+        Guid UniqueID { get; }
     }
 }

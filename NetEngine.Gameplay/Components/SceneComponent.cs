@@ -26,7 +26,8 @@
         public List<SceneComponent> Children { get; set; }
 
         /// <inheritdoc/>
-        public SceneComponent(GameObject owner) : base(owner)
+        public SceneComponent()
+            : base()
         {
             Children = new List<SceneComponent>();
             Transform = new Transform();

@@ -7,13 +7,8 @@
     /// <summary>
     /// GameObjects are the core of gameplay. They represent a spawnable object in the scene.
     /// </summary>
-    public class GameObject : IUniqueObject
+    public class GameObject : UniqueObjectRoot
     {
-        /// <summary>
-        /// This GameObject's unique GUID.
-        /// </summary>
-        public Guid UniqueID { get; set; }
-
         /// <summary>
         /// The object's name (not guaranteed to be unique, or even set).
         /// </summary>
@@ -34,6 +29,42 @@
         /// </summary>
         public SceneComponent RootComponent { get; set; }
 
+        /// <summary>
+        /// Constructs a GameObject instance.
+        /// </summary>
+        public GameObject()
+        {
+            Components = new List<Component>();
+        }
+
+        /// <summary>
+        /// Adds a component to this GameObject and returns the new component instance.
+        /// </summary>
+        /// <typeparam name="TComponent">The type of component to create.</typeparam>
+        /// <returns>The newly-created Component.</returns>
+        public TComponent AddComponent<TComponent>()
+            where TComponent : Component, new()
+        {
+            var comp = GetWorld().CreateComponent<TComponent>(this);
+            Components.Add(comp);
+            return comp;
+        }
+
+        /// <summary>
+        /// Constructs a component with the given factory method and adds it to this GameObject.
+        /// </summary>
+        /// <typeparam name="TComponent">The type of component to create.</typeparam>
+        /// <param name="factory">The factory method that creates the component.</param>
+        /// <returns>The newly-created Component.</returns>
+        public TComponent AddComponent<TComponent>(Func<TComponent> factory)
+            where TComponent : Component
+        {
+            var comp = GetWorld().CreateComponent(this, factory);
+            Components.Add(comp);
+            return comp;
+        }
+
+        #region Transform Accessors
         /// <summary>
         /// Gets the world matrix of this Game Object based on its parent and root component.
         /// </summary>
@@ -70,7 +101,9 @@
         {
             return GetWorldMatrix().ExtractScale();
         }
+        #endregion
 
+        #region Gameplay Triggers
         /// <summary>
         /// Called once when this object is spawned, or when gameplay begins for pre-spawned objects.
         /// </summary>
@@ -94,5 +127,6 @@
         /// </summary>
         public virtual void OnDestroy()
         { }
+        #endregion
     }
 }

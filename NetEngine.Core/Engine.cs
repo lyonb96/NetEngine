@@ -2,6 +2,7 @@
 {
     using System;
     using System.Diagnostics;
+    using NetEngine.Gameplay;
     using Renderer;
     using Utilities;
 
@@ -64,6 +65,7 @@
             // Load and initialize global config options
             GlobalConfig.Initialize();
             GlobalConfig.Instance.InstanceName = Game.Name;
+            Time.FixedDeltaTime = 1.0F / 60.0F;
 
             // Create the game window
             Window = new NetEngineWindow();
@@ -74,6 +76,9 @@
             AssetManager = new AssetManager();
             AssetManager.Initialize();
             Game.AssetManager = AssetManager;
+
+            // Create the game world
+            Game.World = World.InitializeGameWorld();
 
             // Call game start
             Game.OnGameStart();
@@ -109,9 +114,10 @@
         private void HandleLogicUpdates()
         {
             // Dispatach the constant logic updates
-            var elapsed = (float)UpdateStopwatch.Elapsed.TotalSeconds;
+            Time.DeltaTime = (float)UpdateStopwatch.Elapsed.TotalSeconds;
+            Time.DeltaTimeTicks = UpdateStopwatch.Elapsed.Ticks;
             UpdateStopwatch.Restart();
-            Update(elapsed);
+            Update();
 
             // Determine how many fixed logic updates to run
             var fixedElapsed = FixedUpdateStopwatch.Elapsed.TotalSeconds;
@@ -132,9 +138,9 @@
         /// Called once before every frame is rendered.
         /// </summary>
         /// <param name="Delta"></param>
-        private void Update(float Delta)
+        private void Update()
         {
-            Debug.Print($"Update framerate: {1.0F / Delta}");
+            Game.OnUpdate();
         }
 
         /// <summary>
@@ -142,7 +148,7 @@
         /// </summary>
         private void FixedUpdate()
         {
-            Debug.Print("Fixed update");
+            Game.OnFixedUpdate();
         }
 
         /// <summary>
@@ -153,6 +159,10 @@
             Renderer.Draw();
         }
 
+        /// <summary>
+        /// Initializes the engine with the given game module type.
+        /// </summary>
+        /// <typeparam name="TGameModule">The game module to run.</typeparam>
         public static void InitializeEngine<TGameModule>()
             where TGameModule : IGameModule, new()
         {
