@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <Platforms>AnyCPU;x64;x86</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
@@ -9,6 +10,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\NetEngine.Models\NetEngine.Models.csproj" />
+    <ProjectReference Include="..\NetEngine.Renderer\NetEngine.Renderer.csproj" />
+    <ProjectReference Include="..\NetEngine.RenderManager\NetEngine.RenderManager.csproj" />
     <ProjectReference Include="..\NetEngine.Utilities\NetEngine.Utilities.csproj" />
   </ItemGroup>
 

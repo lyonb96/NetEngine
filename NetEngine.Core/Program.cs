@@ -1,8 +1,6 @@
 ﻿namespace NetEngine.Core
 {
-    using System.Diagnostics;
     using Gameplay;
-    using Utilities;
 
     class Program
     {
@@ -19,13 +17,8 @@
         public TestGameObject()
             : base()
         {
-            Mesh = AddComponent<StaticMeshComponent>();
-        }
-
-        public override void Update()
-        {
-            base.Update();
-            Debug.Print("Hello :)");
+            Mesh = AddComponent(() => new StaticMeshComponent("TestMesh"));
+            SetRootComponent(Mesh);
         }
     }
 

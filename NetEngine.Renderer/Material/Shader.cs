@@ -12,7 +12,7 @@
         /// <summary>
         /// OpenGL's shader handle.
         /// </summary>
-        public int Handle { get; private set; }
+        public readonly int Handle;
 
         /// <summary>
         /// A mapping of uniform names to their locations on the shader.

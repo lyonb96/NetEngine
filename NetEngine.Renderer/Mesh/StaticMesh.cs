@@ -20,24 +20,14 @@
         internal int IndexBufferObject { get; set; }
 
         /// <summary>
-        /// The VAO for static meshes
+        /// The number of indices in the index buffer.
         /// </summary>
-        internal static int StaticMeshVAO { get; private set; }
+        internal int IndexCount { get; set; }
 
         /// <summary>
-        /// Method used internally in the renderer to generate the VAO for static meshes
+        /// The static mesh's VAO.
         /// </summary>
-        internal static void GenerateStaticMeshVAO()
-        {
-            StaticMeshVAO = GL.GenVertexArray();
-            GL.BindVertexArray(StaticMeshVAO);
-            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
-            GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 2 * sizeof(float), 3 * sizeof(float));
-            GL.VertexAttribPointer(2, 4, VertexAttribPointerType.Float, false, 4 * sizeof(float), 5 * sizeof(float));
-            GL.EnableVertexAttribArray(0);
-            GL.EnableVertexAttribArray(1);
-            GL.EnableVertexAttribArray(2);
-        }
+        internal int VertexArrayObject { get; private set; }
 
         public StaticMesh()
         { }
@@ -69,27 +59,52 @@
 
             // Load vertices
             var vertexCount = stream.ReadInt32();
-            var vertexData = stream.ReadBytes(vertexSize * vertexCount);
-            // Load index
-            var indexCount = stream.ReadInt32();
-            var indexData = stream.ReadBytes(indexCount * sizeof(uint));
+            var rawVertexData = stream.ReadBytes(vertexSize * vertexCount);
 
-            // Generate buffer objects
-            VertexBufferObject = GL.GenBuffer();
-            GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
+            // Load indices
+            IndexCount = stream.ReadInt32();
+            var rawIndexData = stream.ReadBytes(IndexCount * sizeof(uint));
+
+            GL.GenVertexArrays(1, out int vao);
+            GL.GenBuffers(1, out int vbo);
+            GL.GenBuffers(1, out int ebo);
+
+            GL.BindVertexArray(vao);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
             GL.BufferData(
                 BufferTarget.ArrayBuffer,
-                vertexData.Length,
-                vertexData,
+                rawVertexData.Length,
+                rawVertexData,
                 BufferUsageHint.StaticDraw);
 
-            IndexBufferObject = GL.GenBuffer();
-            GL.BindBuffer(BufferTarget.ArrayBuffer, IndexBufferObject);
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, ebo);
             GL.BufferData(
-                BufferTarget.ArrayBuffer,
-                indexData.Length,
-                indexData,
+                BufferTarget.ElementArrayBuffer,
+                rawIndexData.Length,
+                rawIndexData,
                 BufferUsageHint.StaticDraw);
+
+            // Vertex position
+            var offset = 0;
+            var stepSize = 3 * sizeof(float);
+            GL.EnableVertexAttribArray(0);
+            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, vertexSize, offset);
+            offset += stepSize;
+            // Vertex normal
+            stepSize = 4 * sizeof(float);
+            GL.EnableVertexAttribArray(1);
+            GL.VertexAttribPointer(1, 4, VertexAttribPointerType.Float, false, vertexSize, offset);
+            offset += stepSize;
+            // Vertex tex coords
+            stepSize = 2 * sizeof(float);
+            GL.EnableVertexAttribArray(2);
+            GL.VertexAttribPointer(2, 2, VertexAttribPointerType.Float, false, vertexSize, offset);
+
+            GL.BindVertexArray(0);
+
+            VertexBufferObject = vbo;
+            IndexBufferObject = ebo;
+            VertexArrayObject = vao;
         }
     }
 }

@@ -22,6 +22,16 @@
         {}
 
         /// <summary>
+        /// Constructs an instance of a material from the given source code.
+        /// </summary>
+        /// <param name="vs">Vertex shader code.</param>
+        /// <param name="fs">Fragment shader code.</param>
+        public Material(string vs, string fs)
+        {
+            InitializeFromSource(vs, fs);
+        }
+
+        /// <summary>
         /// Sets this material's shader as the active shader for OpenGL.
         /// </summary>
         public void SetActive()
@@ -73,6 +83,18 @@
             GL.UseProgram(Shader.Handle);
             GL.Uniform4(Shader.UniformLocations[name], value);
         }
+
+        /// <summary>
+        /// Sets a new Matrix4 value for the given uniform.
+        /// </summary>
+        /// <remarks>Transposes the matrix before setting it.</remarks>
+        /// <param name="name">The name of the uniform to set.</param>
+        /// <param name="value">The new value to assign to the uniform.</param>
+        internal void SetUniformMatrix4_Implementation(string name, Matrix4 value)
+        {
+            GL.UseProgram(Shader.Handle);
+            GL.UniformMatrix4(Shader.UniformLocations[name], true, ref value);
+        }
         #endregion
 
         /// <inheritdoc/>
@@ -81,6 +103,17 @@
             // Get vertex and fragment shader source from the stream
             var vs = stream.ReadString();
             var fs = stream.ReadString();
+
+            InitializeFromSource(vs, fs);
+        }
+
+        /// <summary>
+        /// Initializes the Shader instance from the given source code.
+        /// </summary>
+        /// <param name="vs">The vertex shader source code.</param>
+        /// <param name="fs">The fragment shader source code.</param>
+        private void InitializeFromSource(string vs, string fs)
+        {
             // Generate the shader
             Shader = new Shader(vs, fs);
         }

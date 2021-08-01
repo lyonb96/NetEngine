@@ -9,10 +9,13 @@
     /// </summary>
     public class AssetManifest
     {
+        /// <summary>
+        /// A list of all data from the asset manifest.
+        /// </summary>
         public List<AssetManifestData> Assets { get; set; }
 
         /// <summary>
-        /// Audits the loaded asset manifest for cyclical or missing dependencies
+        /// Audits the loaded asset manifest for cyclical or missing dependencies.
         /// </summary>
         public void AuditManifest()
         {

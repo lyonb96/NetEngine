@@ -27,7 +27,7 @@
         /// <summary>
         /// This GameObject's root component.
         /// </summary>
-        public SceneComponent RootComponent { get; set; }
+        public SceneComponent RootComponent { get; private set; }
 
         /// <summary>
         /// Constructs a GameObject instance.
@@ -35,6 +35,16 @@
         public GameObject()
         {
             Components = new List<Component>();
+        }
+
+        /// <summary>
+        /// Sets the root component of this game object.
+        /// </summary>
+        /// <param name="newRoot">The new component to set as the root.</param>
+        protected void SetRootComponent(SceneComponent newRoot)
+        {
+            GetWorld().OnRootComponentChanged(RootComponent, newRoot);
+            RootComponent = newRoot;
         }
 
         /// <summary>

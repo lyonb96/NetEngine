@@ -1,7 +1,5 @@
 ﻿namespace NetEngine.Gameplay
 {
-    using System;
-
     /// <summary>
     /// Components are modular bits of logic that can attach to GameObjects in a hierarchical pattern.
     /// </summary>

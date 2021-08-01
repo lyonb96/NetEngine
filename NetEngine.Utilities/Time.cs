@@ -19,5 +19,10 @@
         /// The amount of time in seconds that pass between each fixed frame.
         /// </summary>
         public static float FixedDeltaTime { get; set; }
+
+        /// <summary>
+        /// The amount of time in seconds that the game has been running.
+        /// </summary>
+        public static float Runtime { get; set; }
     }
 }

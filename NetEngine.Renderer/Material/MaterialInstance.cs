@@ -31,9 +31,19 @@
         }
 
         /// <summary>
+        /// Creates a material instance based on the given material.
+        /// </summary>
+        /// <param name="baseMat"></param>
+        public MaterialInstance(Material baseMat)
+            : this()
+        {
+            BaseMaterial = baseMat;
+        }
+
+        /// <summary>
         /// Sets this material instance as the active one on the pipeline.
         /// </summary>
-        internal void SetActive()
+        public void SetActive()
         {
             BaseMaterial.SetActive();
             foreach (var uniformApply in Uniforms.Values)
@@ -92,6 +102,19 @@
             Uniforms[name] = () =>
             {
                 BaseMaterial.SetUniformFloat4_Implementation(name, value);
+            };
+        }
+
+        /// <summary>
+        /// Sets a new Matrix4 value for the given uniform.
+        /// </summary>
+        /// <param name="name">The name of the uniform to set.</param>
+        /// <param name="value">The new value to assign to the uniform.</param>
+        public void SetUniformMatrix4(string name, Matrix4 value)
+        {
+            Uniforms[name] = () =>
+            {
+                BaseMaterial.SetUniformMatrix4_Implementation(name, value);
             };
         }
         #endregion

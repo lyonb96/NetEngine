@@ -3,7 +3,9 @@
     using System;
     using System.Diagnostics;
     using NetEngine.Gameplay;
+    using OpenTK.Mathematics;
     using Renderer;
+    using RenderManager;
     using Utilities;
 
     /// <summary>
@@ -24,7 +26,7 @@
         /// <summary>
         /// The window's renderer instance.
         /// </summary>
-        private Renderer Renderer { get; set; }
+        private RenderManager RenderManager { get; set; }
 
         /// <summary>
         /// The game instance's asset manager
@@ -40,6 +42,11 @@
         /// A Stopwatch for timing the fixed update loop.
         /// </summary>
         private Stopwatch FixedUpdateStopwatch { get; set; }
+
+        /// <summary>
+        /// Temporary camera set here for testing.
+        /// </summary>
+        private Camera Cam { get; set; }
 
         /// <summary>
         /// Constructs the engine instance and stores the game module
@@ -70,7 +77,7 @@
             // Create the game window
             Window = new NetEngineWindow();
             Window.Initialize();
-            Renderer = Window.WindowRenderer;
+            RenderManager = new RenderManager(Window.WindowRenderer);
 
             // Start up the asset manager
             AssetManager = new AssetManager();
@@ -78,7 +85,17 @@
             Game.AssetManager = AssetManager;
 
             // Create the game world
-            Game.World = World.InitializeGameWorld();
+            Game.World = World.InitializeGameWorld(
+                RenderManager.GetRootNode(),
+                AssetManager);
+
+            Cam = new Camera
+            {
+                Position = new Vector3(4.0F, 4.0F, 4.0F),
+                Direction = Vector3.UnitZ,
+                Up = Vector3.UnitY,
+                FieldOfView = 70.0F
+            };
 
             // Call game start
             Game.OnGameStart();
@@ -115,6 +132,7 @@
         {
             // Dispatach the constant logic updates
             Time.DeltaTime = (float)UpdateStopwatch.Elapsed.TotalSeconds;
+            Time.Runtime += Time.DeltaTime;
             Time.DeltaTimeTicks = UpdateStopwatch.Elapsed.Ticks;
             UpdateStopwatch.Restart();
             Update();
@@ -156,7 +174,10 @@
         /// </summary>
         private void HandleRenderUpdate()
         {
-            Renderer.Draw();
+            // Determine current active camera
+            // For now this is just hard coded
+            var activeCam = Cam;
+            RenderManager.DrawFrame(activeCam);
         }
 
         /// <summary>

@@ -60,9 +60,23 @@
             {
                 Size = new Vector2i(config.WindowWidth, config.WindowHeight),
                 API = ContextAPI.OpenGL,
+                Profile = ContextProfile.Core,
+                WindowBorder = WindowBorder.Fixed,
                 IsFullscreen = config.IsFullscreen,
+                Flags = ContextFlags.Debug,
+                AutoLoadBindings = true,
                 Title = config.InstanceName,
             };
+        }
+
+        /// <summary>
+        /// Gets the aspect ratio of the window based on the width and height set in config.
+        /// </summary>
+        /// <param name="config">The config to load from.</param>
+        /// <returns>The aspect ratio of the window.</returns>
+        internal static float GetWindowAspectRatio(this GlobalConfig config)
+        {
+            return (float)config.WindowWidth / (float)config.WindowHeight;
         }
     }
 }

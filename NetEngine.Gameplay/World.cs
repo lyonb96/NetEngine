@@ -2,21 +2,63 @@
 {
     using System;
     using System.Collections.Generic;
+    using RenderManager;
+    using Utilities;
 
+    /// <summary>
+    /// The container for all currently spawned objects. Handles updates and creation/destruction.
+    /// </summary>
     public sealed class World
     {
         /// <summary>
         /// A list of currently spawned objects.
         /// </summary>
-        private readonly List<GameObject> Objects;
+        public List<GameObject> Objects { get; private set; }
+
+        /// <summary>
+        /// The scene graph's root node, for attaching objects.
+        /// </summary>
+        private readonly ISceneGraphNode RootNode;
+
+        /// <summary>
+        /// The engine's asset manager instance, for loading or resolving assets in components.
+        /// </summary>
+        internal AssetManager AssetManager { get; private set; }
 
         /// <summary>
         /// Initializes the world instance.
         /// </summary>
-        internal World()
+        /// <param name="root">The scene graph's root node.</param>
+        /// <param name="assetManager">The asset manager instance.</param>
+        internal World(
+            ISceneGraphNode root,
+            AssetManager assetManager)
         {
             Objects = new List<GameObject>();
+            RootNode = root;
+            AssetManager = assetManager;
             UniqueObjectRoot.SetWorld(this);
+        }
+
+        /// <summary>
+        /// Called by an object when its root component is changed.
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="oldRoot"></param>
+        /// <param name="newRoot"></param>
+        internal void OnRootComponentChanged(SceneComponent oldRoot, SceneComponent newRoot)
+        {
+            if (oldRoot != null)
+            {
+                var parent = oldRoot.Parent;
+                parent.DetachChild(oldRoot);
+                parent.AttachChild(newRoot);
+            }
+            else
+            {
+                RootNode.DetachChild(oldRoot);
+                RootNode.AttachChild(newRoot);
+            }
         }
 
         /// <summary>
@@ -98,9 +140,11 @@
         /// Creates a World instance and performs any necessary initialization.
         /// </summary>
         /// <returns>An initialized game world.</returns>
-        public static World InitializeGameWorld()
+        public static World InitializeGameWorld(
+            ISceneGraphNode root,
+            AssetManager assetManager)
         {
-            var inst = new World();
+            var inst = new World(root, assetManager);
             return inst;
         }
     }

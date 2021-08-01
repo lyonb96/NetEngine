@@ -1,23 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using Assimp;
-using Microsoft.Win32;
-
-namespace NetEngine.Toolkit
+﻿namespace NetEngine.Toolkit
 {
+    using System.IO;
+    using System.Linq;
+    using System.Windows;
+    using Assimp;
+    using Microsoft.Win32;
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -73,7 +61,10 @@ namespace NetEngine.Toolkit
             }
 
             using var importer = new AssimpContext();
-            var scene = importer.ImportFile(SelectedFile);
+            var scene = importer.ImportFile(SelectedFile,
+                PostProcessSteps.OptimizeGraph
+                | PostProcessSteps.OptimizeMeshes
+                | PostProcessSteps.JoinIdenticalVertices);
 
             // For now, a very naive approach: just grab the first mesh from the Assimp scene
             var mesh = scene?.Meshes?.FirstOrDefault();
@@ -90,12 +81,12 @@ namespace NetEngine.Toolkit
             writer.Write(mesh.VertexCount); // Vertex count
             for (var i = 0; i < mesh.VertexCount; ++i)
             {
-                var pos = mesh.Vertices[i];
-                var norm = mesh.Normals[i];
-                var bitangent = mesh.HasTangentBasis ? mesh.BiTangents[i] : new Vector3D(0.0F);
-                var tangent = mesh.HasTangentBasis ? mesh.Tangents[i] : new Vector3D(0.0F);
+                var pos = ConvertToTKM(mesh.Vertices[i]);
+                var norm = ConvertToTKM(mesh.Normals[i]);
+                var bitangent = ConvertToTKM(mesh.HasTangentBasis ? mesh.BiTangents[i] : new Vector3D(0.0F));
+                var tangent = ConvertToTKM(mesh.HasTangentBasis ? mesh.Tangents[i] : new Vector3D(0.0F));
                 // TODO: using normal, bitangent, and tangent to generate a tangent-space quaternion
-                var tangentSpace = new Quaternion();
+                var tangentSpace = OpenTK.Mathematics.Quaternion.FromAxisAngle(norm, 0.0F);
                 var texCoord = mesh.HasTextureCoords(0)
                     ? mesh.TextureCoordinateChannels[0][i]
                     : new Vector3D(0.0F);
@@ -104,9 +95,9 @@ namespace NetEngine.Toolkit
                 writer.Write(pos.Y);
                 writer.Write(pos.Z);
                 // Tangent space
-                writer.Write(tangentSpace.X);
-                writer.Write(tangentSpace.Y);
-                writer.Write(tangentSpace.Z);
+                writer.Write(norm.X);
+                writer.Write(norm.Y);
+                writer.Write(norm.Z);
                 writer.Write(tangentSpace.W);
                 // Texture coords
                 writer.Write(texCoord.X);
@@ -117,9 +108,14 @@ namespace NetEngine.Toolkit
             {
                 foreach (var index in face.Indices)
                 {
-                    writer.Write(index);
+                    writer.Write((uint)index);
                 }
             }
+        }
+
+        private static OpenTK.Mathematics.Vector3 ConvertToTKM(Vector3D input)
+        {
+            return new OpenTK.Mathematics.Vector3(input.X, input.Y, input.Z);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿namespace NetEngine.Gameplay
 {
     using System.Collections.Generic;
+    using NetEngine.RenderManager;
     using OpenTK.Mathematics;
 
     /// <summary>
@@ -8,28 +9,24 @@
     /// The base scene component acts as an empty node, for structuring the hierarchy.
     /// Sub-classes include light components, mesh components, and more.
     /// </summary>
-    public class SceneComponent : Component
+    public class SceneComponent : Component, ISceneGraphNode
     {
         /// <summary>
         /// This SceneComponent's transform.
         /// </summary>
         public Transform Transform { get; set; }
 
-        /// <summary>
-        /// The parent of this Component - should only be null if this is the root component of the object.
-        /// </summary>
-        public SceneComponent Parent { get; protected set; }
+        /// <inheritdoc/>
+        public List<ISceneGraphNode> Children { get; set; }
 
-        /// <summary>
-        /// A list of the Components attached to this one.
-        /// </summary>
-        public List<SceneComponent> Children { get; set; }
+        /// <inheritdoc/>
+        public ISceneGraphNode Parent { get; set; }
 
         /// <inheritdoc/>
         public SceneComponent()
             : base()
         {
-            Children = new List<SceneComponent>();
+            Children = new List<ISceneGraphNode>();
             Transform = new Transform();
         }
 
@@ -37,7 +34,7 @@
         /// Used to attach a Component to this one.
         /// </summary>
         /// <param name="child">The child to attach to this object.</param>
-        public void AttachChild(SceneComponent child)
+        public void AttachChild(ISceneGraphNode child)
         {
             child.Parent = this;
             Children.Add(child);
@@ -47,7 +44,7 @@
         /// Used to detach a Component from this one.
         /// </summary>
         /// <param name="child">The child Component to detach.</param>
-        public void DetachChild(SceneComponent child)
+        public void DetachChild(ISceneGraphNode child)
         {
             if (child.Parent != this)
             {
@@ -58,22 +55,21 @@
         }
 
         /// <summary>
-        /// Calculates this scene component's local transform.
+        /// Gets the local transform matrix for this scene component.
         /// </summary>
-        /// <returns>A 4x4 matrix describing this component's local translation, rotation, and scale.</returns>
+        /// <returns>The local transform matrix for this scene component.</returns>
         public Matrix4 GetLocalMatrix()
         {
             return Transform.ToMatrix4();
         }
 
         /// <summary>
-        /// Calculates this scene component's world transform.
+        /// Gets the world transform matrix for this scene component.
         /// </summary>
-        /// <returns>A 4x4 matrix describing this component's world translation, rotation, and scale.</returns>
+        /// <returns>The world transform matrix for this scene component.</returns>
         public Matrix4 GetWorldMatrix()
         {
-            return (Parent?.GetWorldMatrix() ?? Owner.Parent?.GetWorldMatrix() ?? Matrix4.Identity)
-                * GetLocalMatrix();
+            return (Parent?.GetWorldMatrix() ?? Matrix4.Identity) * GetLocalMatrix();
         }
     }
 }
