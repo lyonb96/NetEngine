@@ -37,7 +37,7 @@
             Objects = new List<GameObject>();
             RootNode = root;
             AssetManager = assetManager;
-            UniqueObjectRoot.SetWorld(this);
+            UniqueObject.SetWorld(this);
         }
 
         /// <summary>

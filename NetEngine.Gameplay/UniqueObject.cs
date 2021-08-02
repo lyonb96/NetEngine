@@ -2,7 +2,7 @@
 {
     using System;
 
-    public class UniqueObjectRoot : IUniqueObject
+    public class UniqueObject : IUniqueObject
     {
         /// <summary>
         /// This object's unique identifier.

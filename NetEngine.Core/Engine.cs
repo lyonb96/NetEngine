@@ -2,7 +2,8 @@
 {
     using System;
     using System.Diagnostics;
-    using NetEngine.Gameplay;
+    using Gameplay;
+    using Input;
     using OpenTK.Mathematics;
     using Renderer;
     using RenderManager;
@@ -91,8 +92,8 @@
 
             Cam = new Camera
             {
-                Position = new Vector3(4.0F, 4.0F, 4.0F),
-                Direction = Vector3.UnitZ,
+                Position = new Vector3(0.0F, 0.0F, 8.0F),
+                Direction = -Vector3.UnitZ,
                 Up = Vector3.UnitY,
                 FieldOfView = 70.0F
             };
@@ -115,6 +116,7 @@
             {
                 Window.ProcessEvents();
                 HandleLogicUpdates();
+                Window.WindowInputHandler.PostFrame();
 
                 if (Window.ShouldExit)
                 {

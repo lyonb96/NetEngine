@@ -3,7 +3,7 @@
     /// <summary>
     /// Components are modular bits of logic that can attach to GameObjects in a hierarchical pattern.
     /// </summary>
-    public class Component : UniqueObjectRoot
+    public class Component : UniqueObject
     {
         /// <summary>
         /// The GameObject that owns this Component.

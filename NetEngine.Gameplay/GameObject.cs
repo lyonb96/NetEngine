@@ -7,7 +7,7 @@
     /// <summary>
     /// GameObjects are the core of gameplay. They represent a spawnable object in the scene.
     /// </summary>
-    public class GameObject : UniqueObjectRoot
+    public class GameObject : UniqueObject
     {
         /// <summary>
         /// The object's name (not guaranteed to be unique, or even set).

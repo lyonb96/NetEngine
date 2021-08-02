@@ -1,6 +1,7 @@
 ﻿namespace NetEngine.Renderer
 {
     using Core;
+    using NetEngine.Input;
     using OpenTK.Mathematics;
     using OpenTK.Windowing.Common;
     using OpenTK.Windowing.Desktop;
@@ -19,6 +20,11 @@
         /// The Window's renderer.
         /// </summary>
         public Renderer WindowRenderer { get; private set; }
+
+        /// <summary>
+        /// The input handler for the Window.
+        /// </summary>
+        public InputHandler WindowInputHandler { get; private set; }
 
         /// <summary>
         /// Builds the game window with native window settings required by OpenTK.
@@ -41,6 +47,12 @@
             // Build the renderer
             WindowRenderer = new Renderer(Context);
             WindowRenderer.Initialize();
+
+            WindowInputHandler = new InputHandler();
+            unsafe
+            {
+                WindowInputHandler.ConfigureCallbacks(WindowPtr);
+            }
         }
     }
 
