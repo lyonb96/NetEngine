@@ -2,9 +2,9 @@
 {
     using System;
     using System.Diagnostics;
-    using Gameplay;
-    using Input;
     using OpenTK.Mathematics;
+    using Gameplay;
+    using InputManager;
     using Renderer;
     using RenderManager;
     using Utilities;
@@ -33,6 +33,11 @@
         /// The game instance's asset manager
         /// </summary>
         private AssetManager AssetManager { get; set; }
+
+        /// <summary>
+        /// The game instance's input manager.
+        /// </summary>
+        private InputManager InputManager { get; set; }
 
         /// <summary>
         /// A Stopwatch for timing the update loop.
@@ -80,6 +85,10 @@
             Window.Initialize();
             RenderManager = new RenderManager(Window.WindowRenderer);
 
+            // Set up input management and load bindings
+            InputManager = new InputManager(Window.WindowInputHandler);
+            InputManager.LoadBindings();
+
             // Start up the asset manager
             AssetManager = new AssetManager();
             AssetManager.Initialize();
@@ -90,6 +99,7 @@
                 RenderManager.GetRootNode(),
                 AssetManager);
 
+            // Test code
             Cam = new Camera
             {
                 Position = new Vector3(0.0F, 0.0F, 8.0F),
@@ -116,7 +126,7 @@
             {
                 Window.ProcessEvents();
                 HandleLogicUpdates();
-                Window.WindowInputHandler.PostFrame();
+                InputManager.PostFrame();
 
                 if (Window.ShouldExit)
                 {

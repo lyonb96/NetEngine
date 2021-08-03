@@ -51,9 +51,12 @@
         /// </summary>
         public void PostFrame()
         {
-            LastActionStates = ActionStates;
-            ActionStates = new Dictionary<Input, bool>();
-            LastAxisStates = AxisStates;
+            // Roll action states to last known set but keep the current state the same
+            // since a "press" or "repeat" event is not guaranteed to occur every frame
+            // for keys that are held
+            LastActionStates = new Dictionary<Input, bool>(ActionStates);
+            // For axis, we roll the state to the last known and clear the current state
+            LastAxisStates = new Dictionary<Input, float>(AxisStates);
             AxisStates = new Dictionary<Input, float>();
         }
 
@@ -208,6 +211,24 @@
         }
 
         /// <summary>
+        /// Gets the last state of the given input as an action. If the given input is an axial input,
+        /// this method will return true for all non-zero values.
+        /// </summary>
+        /// <param name="trigger">The input to check.</param>
+        /// <returns>True if the input is active, false if not.</returns>
+        public bool GetLastStateAsAction(Input trigger)
+        {
+            if (IsAction(trigger))
+            {
+                return GetLastActionState(trigger);
+            }
+            else
+            {
+                return GetLastAxisState(trigger) != 0.0F;
+            }
+        }
+
+        /// <summary>
         /// Gets the state of the given input as an axis. If the given input is an action input,
         /// this method will return 1.0F for pressed actions, and 0.0F otherwise.
         /// </summary>
@@ -228,6 +249,26 @@
         }
 
         /// <summary>
+        /// Gets the last state of the given input as an axis. If the given input is an action input,
+        /// this method will return 1.0F for pressed actions, and 0.0F otherwise.
+        /// </summary>
+        /// <param name="trigger">The input to check.</param>
+        /// <returns>A float value representing the last state of the trigger.</returns>
+        public float GetLastStateAsAxis(Input trigger)
+        {
+            if (IsAction(trigger))
+            {
+                return GetLastActionState(trigger)
+                    ? 1.0F
+                    : 0.0F;
+            }
+            else
+            {
+                return GetLastAxisState(trigger);
+            }
+        }
+
+        /// <summary>
         /// Safely gets the current state of an action trigger.
         /// </summary>
         /// <param name="trigger">The trigger to check.</param>
@@ -240,6 +281,18 @@
         }
 
         /// <summary>
+        /// Safely gets the last state of an action trigger.
+        /// </summary>
+        /// <param name="trigger">The trigger to check.</param>
+        /// <returns>True if the trigger was pressed, false if not.</returns>
+        public bool GetLastActionState(Input trigger)
+        {
+            return LastActionStates.ContainsKey(trigger)
+                ? LastActionStates[trigger]
+                : false;
+        }
+
+        /// <summary>
         /// Safely gets the current state of an axis trigger.
         /// </summary>
         /// <param name="trigger">The trigger to check.</param>
@@ -248,6 +301,18 @@
         {
             return AxisStates.ContainsKey(trigger)
                 ? AxisStates[trigger]
+                : 0.0F;
+        }
+
+        /// <summary>
+        /// Safely gets the last state of an axis trigger.
+        /// </summary>
+        /// <param name="trigger">The trigger to check.</param>
+        /// <returns>A float value representing the previous state of the trigger.</returns>
+        public float GetLastAxisState(Input trigger)
+        {
+            return LastAxisStates.ContainsKey(trigger)
+                ? LastAxisStates[trigger]
                 : 0.0F;
         }
 

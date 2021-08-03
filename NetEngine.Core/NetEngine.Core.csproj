@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\NetEngine.Gameplay\NetEngine.Gameplay.csproj" />
+    <ProjectReference Include="..\NetEngine.InputManager\NetEngine.InputManager.csproj" />
     <ProjectReference Include="..\NetEngine.Renderer\NetEngine.Renderer.csproj" />
     <ProjectReference Include="..\NetEngine.Utilities\NetEngine.Utilities.csproj" />
   </ItemGroup>
