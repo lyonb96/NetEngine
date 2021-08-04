@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using InputManager;
     using RenderManager;
     using Utilities;
 
@@ -16,6 +17,11 @@
         public List<GameObject> Objects { get; private set; }
 
         /// <summary>
+        /// A list of active controllers.
+        /// </summary>
+        public List<Controller> Controllers { get; private set; }
+
+        /// <summary>
         /// The scene graph's root node, for attaching objects.
         /// </summary>
         private readonly ISceneGraphNode RootNode;
@@ -23,7 +29,12 @@
         /// <summary>
         /// The engine's asset manager instance, for loading or resolving assets in components.
         /// </summary>
-        internal AssetManager AssetManager { get; private set; }
+        private AssetManager AssetManager { get; set; }
+
+        /// <summary>
+        /// The engine's input manager, for listening to input events in controllers.
+        /// </summary>
+        private InputManager InputManager { get; set; }
 
         /// <summary>
         /// Initializes the world instance.
@@ -32,20 +43,22 @@
         /// <param name="assetManager">The asset manager instance.</param>
         internal World(
             ISceneGraphNode root,
-            AssetManager assetManager)
+            AssetManager assetManager,
+            InputManager inputManager)
         {
             Objects = new List<GameObject>();
+            Controllers = new List<Controller>();
             RootNode = root;
             AssetManager = assetManager;
+            InputManager = inputManager;
             UniqueObject.SetWorld(this);
         }
 
         /// <summary>
         /// Called by an object when its root component is changed.
         /// </summary>
-        /// <param name="obj"></param>
-        /// <param name="oldRoot"></param>
-        /// <param name="newRoot"></param>
+        /// <param name="oldRoot">The old root component of the object.</param>
+        /// <param name="newRoot">The new root component of the object.</param>
         internal void OnRootComponentChanged(SceneComponent oldRoot, SceneComponent newRoot)
         {
             if (oldRoot != null)
@@ -61,6 +74,7 @@
             }
         }
 
+        #region Object Creation
         /// <summary>
         /// Spawns a game object of the given type, 
         /// </summary>
@@ -107,10 +121,29 @@
         }
 
         /// <summary>
+        /// Creates a controller of the given type.
+        /// </summary>
+        /// <typeparam name="TController">The type of controller to create.</typeparam>
+        /// <returns>A new instance of the given controller type.</returns>
+        public TController CreateController<TController>()
+            where TController : Controller, new()
+        {
+            var controller = new TController();
+            controller.UniqueID = Guid.NewGuid();
+            Controllers.Add(controller);
+            return controller;
+        }
+        #endregion
+
+        /// <summary>
         /// Handles updating all of the game objects and their components each frame.
         /// </summary>
         public void OnUpdate()
         {
+            foreach (var controller in Controllers)
+            {
+                controller.Update();
+            }
             foreach (var obj in Objects)
             {
                 obj.Update();
@@ -136,15 +169,26 @@
             }
         }
 
+        public AssetManager GetAssetManager()
+        {
+            return AssetManager;
+        }
+
+        public InputManager GetInputManager()
+        {
+            return InputManager;
+        }
+
         /// <summary>
         /// Creates a World instance and performs any necessary initialization.
         /// </summary>
         /// <returns>An initialized game world.</returns>
         public static World InitializeGameWorld(
             ISceneGraphNode root,
-            AssetManager assetManager)
+            AssetManager assetManager,
+            InputManager inputManager)
         {
-            var inst = new World(root, assetManager);
+            var inst = new World(root, assetManager, inputManager);
             return inst;
         }
     }

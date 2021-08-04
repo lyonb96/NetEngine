@@ -138,4 +138,13 @@
         AXIS_MAX,
         Unknown
     }
+
+    /// <summary>
+    /// Enum representing modes for action events.
+    /// </summary>
+    public enum ActionMode
+    {
+        Pressed,
+        Released,
+    }
 }
