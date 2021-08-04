@@ -54,7 +54,7 @@ void main()
 
             Model = new StaticMeshModel
             {
-                Mesh = GetWorld().AssetManager.LoadAsset<StaticMesh>(modelName),
+                Mesh = GetWorld().GetAssetManager().LoadAsset<StaticMesh>(modelName),
                 Material = new MaterialInstance(new Material(vs, fs))
             };
         }

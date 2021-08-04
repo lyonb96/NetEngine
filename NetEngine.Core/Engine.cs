@@ -97,7 +97,8 @@
             // Create the game world
             Game.World = World.InitializeGameWorld(
                 RenderManager.GetRootNode(),
-                AssetManager);
+                AssetManager,
+                InputManager);
 
             // Test code
             Cam = new Camera

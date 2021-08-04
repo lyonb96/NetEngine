@@ -10,6 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\NetEngine.InputManager\NetEngine.InputManager.csproj" />
     <ProjectReference Include="..\NetEngine.Models\NetEngine.Models.csproj" />
     <ProjectReference Include="..\NetEngine.Renderer\NetEngine.Renderer.csproj" />
     <ProjectReference Include="..\NetEngine.RenderManager\NetEngine.RenderManager.csproj" />
