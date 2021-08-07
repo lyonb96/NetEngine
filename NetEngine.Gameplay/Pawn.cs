@@ -12,6 +12,13 @@
         protected Controller Controller { get; set; }
 
         /// <summary>
+        /// Gets the current controller of this Pawn.
+        /// </summary>
+        /// <returns>The current controller of this Pawn, or null if there is none.</returns>
+        public Controller GetController() => Controller;
+
+        #region Possession logic
+        /// <summary>
         /// Possesses the pawn with the given controller. Controller can be null
         /// to unpossess and leave it with no controller.
         /// </summary>
@@ -51,8 +58,10 @@
         /// Called by PlayerControllers when they possess this pawn. Used to configure
         /// input bindings for controlling this pawn.
         /// </summary>
-        public virtual void SetupPlayerInput()
+        /// <param name="playerController">The player controller that is possessing the pawn.</param>
+        public virtual void SetupPlayerInput(PlayerController playerController)
         {
         }
+        #endregion
     }
 }

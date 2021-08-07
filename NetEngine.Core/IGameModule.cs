@@ -1,6 +1,7 @@
 ﻿namespace NetEngine.Core
 {
-    using NetEngine.Gameplay;
+    using InputManager;
+    using RenderManager;
     using Utilities;
 
     /// <summary>
@@ -14,14 +15,15 @@
         string Name { get; }
 
         /// <summary>
-        /// The game instance's asset manager.
+        /// Initializes the game module from the given data.
         /// </summary>
-        AssetManager AssetManager { get; set; }
-
-        /// <summary>
-        /// The game instance's world.
-        /// </summary>
-        World World { get; set; }
+        /// <param name="root">The root node of the rendered scene.</param>
+        /// <param name="assetManager">The asset manager instance.</param>
+        /// <param name="inputManager">The input manager instance.</param>
+        internal void InitializeModule(
+            ISceneGraphNode root,
+            AssetManager assetManager,
+            InputManager inputManager);
 
         /// <summary>
         /// Called once per frame to update all of the game logic.

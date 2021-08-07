@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetEngine.Renderer", "NetEn
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetEngine.Utilities", "NetEngine.Utilities\NetEngine.Utilities.csproj", "{4137F34E-6BD5-4480-B978-1C4926648EE1}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00.Core", "00.Core", "{C44A6F8A-94DE-4873-ACF1-2D00309F6846}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00.Utilities", "00.Utilities", "{C44A6F8A-94DE-4873-ACF1-2D00309F6846}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01.HardwareAbstraction", "01.HardwareAbstraction", "{69E38108-CDF2-4CDB-9F3E-F60426D8CBBC}"
 EndProject
@@ -36,7 +36,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetEngine.RenderManager", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetEngine.Input", "NetEngine.Input\NetEngine.Input.csproj", "{EC5A3FB7-D547-44E2-A7B6-562A622D1024}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetEngine.InputManager", "NetEngine.InputManager\NetEngine.InputManager.csproj", "{7045E9B8-A405-4C83-A3ED-315481BD3DF4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetEngine.InputManager", "NetEngine.InputManager\NetEngine.InputManager.csproj", "{7045E9B8-A405-4C83-A3ED-315481BD3DF4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "05.Core", "05.Core", "{AE444F0C-E9AA-497A-8444-C9CCEE816D01}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetEngine.Sample", "NetEngine.Sample\NetEngine.Sample.csproj", "{AC618CA7-A32F-4E4F-AAC2-31A0C84C366A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -156,11 +160,24 @@ Global
 		{7045E9B8-A405-4C83-A3ED-315481BD3DF4}.Release|x64.Build.0 = Release|Any CPU
 		{7045E9B8-A405-4C83-A3ED-315481BD3DF4}.Release|x86.ActiveCfg = Release|Any CPU
 		{7045E9B8-A405-4C83-A3ED-315481BD3DF4}.Release|x86.Build.0 = Release|Any CPU
+		{AC618CA7-A32F-4E4F-AAC2-31A0C84C366A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC618CA7-A32F-4E4F-AAC2-31A0C84C366A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC618CA7-A32F-4E4F-AAC2-31A0C84C366A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{AC618CA7-A32F-4E4F-AAC2-31A0C84C366A}.Debug|x64.Build.0 = Debug|Any CPU
+		{AC618CA7-A32F-4E4F-AAC2-31A0C84C366A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{AC618CA7-A32F-4E4F-AAC2-31A0C84C366A}.Debug|x86.Build.0 = Debug|Any CPU
+		{AC618CA7-A32F-4E4F-AAC2-31A0C84C366A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC618CA7-A32F-4E4F-AAC2-31A0C84C366A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC618CA7-A32F-4E4F-AAC2-31A0C84C366A}.Release|x64.ActiveCfg = Release|Any CPU
+		{AC618CA7-A32F-4E4F-AAC2-31A0C84C366A}.Release|x64.Build.0 = Release|Any CPU
+		{AC618CA7-A32F-4E4F-AAC2-31A0C84C366A}.Release|x86.ActiveCfg = Release|Any CPU
+		{AC618CA7-A32F-4E4F-AAC2-31A0C84C366A}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{71B5CEE6-AF8C-483B-8CAB-824CEB76E7CA} = {AE444F0C-E9AA-497A-8444-C9CCEE816D01}
 		{AD958EC8-D8D0-41B3-930A-8E39DD579672} = {69E38108-CDF2-4CDB-9F3E-F60426D8CBBC}
 		{4137F34E-6BD5-4480-B978-1C4926648EE1} = {C44A6F8A-94DE-4873-ACF1-2D00309F6846}
 		{850EA655-CB2E-4B0D-BC64-D58E232B1B98} = {98CDB080-5771-4671-BA81-48BA0E1B3093}

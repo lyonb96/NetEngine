@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using OpenTK.Mathematics;
 
     /// <summary>
@@ -74,6 +75,27 @@
             return comp;
         }
 
+        /// <summary>
+        /// Gets this game object's components.
+        /// </summary>
+        /// <returns>A list of the components attached to this game object.</returns>
+        public List<Component> GetComponents() => Components;
+
+        /// <summary>
+        /// Gets all of the components attached to this object that are of a given type.
+        /// </summary>
+        /// <typeparam name="TComponent">The type of component to look for.</typeparam>
+        /// <returns>A list of all components attached to the object that match the
+        /// given type.</returns>
+        public List<TComponent> GetComponents<TComponent>()
+            where TComponent : Component
+        {
+            return Components
+                .Where(x => x is TComponent)
+                .Select(x => x as TComponent)
+                .ToList();
+        }
+
         #region Transform Accessors
         /// <summary>
         /// Gets the world matrix of this Game Object based on its parent and root component.
@@ -110,6 +132,73 @@
         public Vector3 GetWorldScale()
         {
             return GetWorldMatrix().ExtractScale();
+        }
+
+        /// <summary>
+        /// Gets the forward axis of this game object in world space.
+        /// </summary>
+        /// <returns>A Vector3 representing the forward axis of this game object in world space.</returns>
+        public Vector3 GetForwardAxis()
+        {
+            if (RootComponent == null)
+            {
+                return Vector3.UnitZ;
+            }
+            return GetWorldRotation() * Vector3.UnitZ;
+        }
+
+        /// <summary>
+        /// Gets the right axis of this game object in world space.
+        /// </summary>
+        /// <returns>A Vector3 representing the right axis of this game object in world space.</returns>
+        public Vector3 GetRightAxis()
+        {
+            if (RootComponent == null)
+            {
+                return Vector3.UnitX;
+            }
+            return GetWorldRotation() * Vector3.UnitX;
+        }
+
+        /// <summary>
+        /// Gets the up axis of this game object in world space.
+        /// </summary>
+        /// <returns>A Vector3 representing the up axis of this game object in world space.</returns>
+        public Vector3 GetUpAxis()
+        {
+            if (RootComponent == null)
+            {
+                return Vector3.UnitY;
+            }
+            return GetWorldRotation() * Vector3.UnitY;
+        }
+
+        /// <summary>
+        /// Adds an offset to the position of the game object in "local" space, AKA relative
+        /// to its parent.
+        /// </summary>
+        /// <param name="offset">The offset to apply.</param>
+        public void AddLocalPosition(Vector3 offset)
+        {
+            if (RootComponent == null)
+            {
+                return;
+            }
+            RootComponent.Transform.Position += offset;
+        }
+
+        /// <summary>
+        /// Rotates the object by the given rotation in "local" space, AKA relative to its
+        /// parent.
+        /// </summary>
+        /// <param name="offset">The offset to apply.</param>
+        public void AddLocalRotation(Quaternion offset)
+        {
+            if (RootComponent == null)
+            {
+                return;
+            }
+            RootComponent.Transform.Rotation *= offset;
         }
         #endregion
 

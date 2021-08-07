@@ -92,10 +92,9 @@
             // Start up the asset manager
             AssetManager = new AssetManager();
             AssetManager.Initialize();
-            Game.AssetManager = AssetManager;
 
             // Create the game world
-            Game.World = World.InitializeGameWorld(
+            Game.InitializeModule(
                 RenderManager.GetRootNode(),
                 AssetManager,
                 InputManager);

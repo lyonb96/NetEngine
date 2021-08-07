@@ -1,9 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <TargetFramework>net5.0</TargetFramework>
     <Platforms>AnyCPU;x64;x86</Platforms>
+    <ApplicationIcon />
+    <StartupObject />
   </PropertyGroup>
 
   <ItemGroup>
@@ -21,9 +23,5 @@
     <ProjectReference Include="..\NetEngine.Renderer\NetEngine.Renderer.csproj" />
     <ProjectReference Include="..\NetEngine.Utilities\NetEngine.Utilities.csproj" />
   </ItemGroup>
-
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="(D: &amp;&amp; mklink /d &quot;$(TargetDir)Assets&quot; &quot;$(ProjectDir)Assets&quot;) || exit 0" />
-  </Target>
 
 </Project>

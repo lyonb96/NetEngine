@@ -71,5 +71,59 @@
         {
             return (Parent?.GetWorldMatrix() ?? Matrix4.Identity) * GetLocalMatrix();
         }
+
+        /// <summary>
+        /// Gets the world location of this scene component based on its parent and root component.
+        /// </summary>
+        /// <returns>A Vector3 representing the world position of this object.</returns>
+        public Vector3 GetWorldLocation()
+        {
+            return GetWorldMatrix().ExtractTranslation();
+        }
+
+        /// <summary>
+        /// Gets the world rotation of this scene component based on its parent and root component.
+        /// </summary>
+        /// <returns>A Quaternion representing the world rotation of this object.</returns>
+        public Quaternion GetWorldRotation()
+        {
+            return GetWorldMatrix().ExtractRotation();
+        }
+
+        /// <summary>
+        /// Gets the world scale of this scene component based on its parent and root component.
+        /// </summary>
+        /// <returns>A Vector3 representing the world scale of this object.</returns>
+        public Vector3 GetWorldScale()
+        {
+            return GetWorldMatrix().ExtractScale();
+        }
+
+        /// <summary>
+        /// Gets the forward axis of this scene component in world space.
+        /// </summary>
+        /// <returns>A Vector3 representing the forward axis of this scene component in world space.</returns>
+        public Vector3 GetForwardAxis()
+        {
+            return GetWorldRotation() * Vector3.UnitZ;
+        }
+
+        /// <summary>
+        /// Gets the right axis of this scene component in world space.
+        /// </summary>
+        /// <returns>A Vector3 representing the right axis of this scene component in world space.</returns>
+        public Vector3 GetRightAxis()
+        {
+            return GetWorldRotation() * Vector3.UnitX;
+        }
+
+        /// <summary>
+        /// Gets the up axis of this scene component in world space.
+        /// </summary>
+        /// <returns>A Vector3 representing the up axis of this scene component in world space.</returns>
+        public Vector3 GetUpAxis()
+        {
+            return GetWorldRotation() * Vector3.UnitY;
+        }
     }
 }

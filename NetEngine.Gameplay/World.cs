@@ -27,6 +27,11 @@
         private readonly ISceneGraphNode RootNode;
 
         /// <summary>
+        /// The current game state.
+        /// </summary>
+        private GameState CurrentGameState { get; set; }
+
+        /// <summary>
         /// The engine's asset manager instance, for loading or resolving assets in components.
         /// </summary>
         private AssetManager AssetManager { get; set; }
@@ -52,7 +57,20 @@
             AssetManager = assetManager;
             InputManager = inputManager;
             UniqueObject.SetWorld(this);
+            GameState.SetWorld(this);
         }
+
+        /// <summary>
+        /// Returns the asset manager instance.
+        /// </summary>
+        /// <returns>The asset manager instance.</returns>
+        public AssetManager GetAssetManager() => AssetManager;
+
+        /// <summary>
+        /// Returns the input manager instance.
+        /// </summary>
+        /// <returns>The input manager instance.</returns>
+        public InputManager GetInputManager() => InputManager;
 
         /// <summary>
         /// Called by an object when its root component is changed.
@@ -135,11 +153,31 @@
         }
         #endregion
 
+        #region State Management
+        /// <summary>
+        /// Sets a new game state type (must be trivially constructible). This method
+        /// will call Stop on the current game state, if there is one.
+        /// </summary>
+        /// <typeparam name="TGameState">The type of game state to create and start.</typeparam>
+        public void SetGameState<TGameState>()
+            where TGameState : GameState, new()
+        {
+            if (CurrentGameState != null)
+            {
+                CurrentGameState.OnStopGameState();
+            }
+            CurrentGameState = new TGameState();
+            CurrentGameState.OnStartGameState();
+        }
+        #endregion
+
+        #region Updates
         /// <summary>
         /// Handles updating all of the game objects and their components each frame.
         /// </summary>
         public void OnUpdate()
         {
+            CurrentGameState?.Update();
             foreach (var controller in Controllers)
             {
                 controller.Update();
@@ -159,6 +197,7 @@
         /// </summary>
         public void OnFixedUpdate()
         {
+            CurrentGameState?.FixedUpdate();
             foreach (var obj in Objects)
             {
                 obj.FixedUpdate();
@@ -168,16 +207,7 @@
                 }
             }
         }
-
-        public AssetManager GetAssetManager()
-        {
-            return AssetManager;
-        }
-
-        public InputManager GetInputManager()
-        {
-            return InputManager;
-        }
+        #endregion
 
         /// <summary>
         /// Creates a World instance and performs any necessary initialization.

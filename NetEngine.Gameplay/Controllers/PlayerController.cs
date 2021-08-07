@@ -66,7 +66,7 @@
         public override void PossessPawn(Pawn newPawn)
         {
             base.PossessPawn(newPawn);
-            newPawn.SetupPlayerInput();
+            newPawn.SetupPlayerInput(this);
         }
 
         /// <inheritdoc/>
