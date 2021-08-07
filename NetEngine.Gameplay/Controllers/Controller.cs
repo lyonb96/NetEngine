@@ -49,6 +49,15 @@
             CurrentCamera = null;
         }
 
+        public void SetActiveCamera(CameraComponent camera)
+        {
+            if (CurrentPawn == null || camera.Owner != CurrentPawn)
+            {
+                return;
+            }
+            CurrentCamera = camera;
+        }
+
         /// <summary>
         /// Gets the currently active camera for this controller.
         /// </summary>
