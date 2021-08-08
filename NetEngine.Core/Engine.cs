@@ -3,7 +3,6 @@
     using System;
     using System.Diagnostics;
     using OpenTK.Mathematics;
-    using Gameplay;
     using InputManager;
     using Renderer;
     using RenderManager;

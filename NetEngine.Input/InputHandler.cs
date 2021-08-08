@@ -44,6 +44,17 @@
             ActionStates = new Dictionary<Input, bool>();
             LastActionStates = new Dictionary<Input, bool>();
             MousePosition = new Vector2();
+
+            unsafe
+            {
+                _keyCallback = KeyCallback;
+                _charCallback = CharCallback;
+                _mouseButtonCallback = MouseButtonCallback;
+                _scrollCallback = ScrollCallback;
+                _joystickCallback = JoystickCallback;
+                _cursorPosCallback = CursorPosCallback;
+                _cursorEnterCallback = CursorEnterCallback;
+            }
         }
 
         /// <summary>
@@ -61,19 +72,27 @@
         }
 
         #region GLFW Callbacks
+        private readonly GLFWCallbacks.KeyCallback _keyCallback;
+        private readonly GLFWCallbacks.CharCallback _charCallback;
+        private readonly GLFWCallbacks.MouseButtonCallback _mouseButtonCallback;
+        private readonly GLFWCallbacks.ScrollCallback _scrollCallback;
+        private readonly GLFWCallbacks.JoystickCallback _joystickCallback;
+        private readonly GLFWCallbacks.CursorPosCallback _cursorPosCallback;
+        private readonly GLFWCallbacks.CursorEnterCallback _cursorEnterCallback;
+
         /// <summary>
         /// Configures callbacks for input from GLFW
         /// </summary>
         /// <param name="window"></param>
         public unsafe void ConfigureCallbacks(Window* window)
         {
-            GLFW.SetKeyCallback(window, KeyCallback);
-            GLFW.SetCharCallback(window, CharCallback);
-            GLFW.SetMouseButtonCallback(window, MouseButtonCallback);
-            GLFW.SetScrollCallback(window, ScrollCallback);
-            GLFW.SetJoystickCallback(JoystickCallback);
-            GLFW.SetCursorPosCallback(window, CursorPosCallback);
-            GLFW.SetCursorEnterCallback(window, CursorEnterCallback);
+            GLFW.SetKeyCallback(window, _keyCallback);
+            GLFW.SetCharCallback(window, _charCallback);
+            GLFW.SetMouseButtonCallback(window, _mouseButtonCallback);
+            GLFW.SetScrollCallback(window, _scrollCallback);
+            GLFW.SetJoystickCallback(_joystickCallback);
+            GLFW.SetCursorPosCallback(window, _cursorPosCallback);
+            GLFW.SetCursorEnterCallback(window, _cursorEnterCallback);
         }
 
         /// <summary>
