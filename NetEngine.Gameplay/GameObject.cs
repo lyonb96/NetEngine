@@ -211,14 +211,18 @@
             RootComponent.Transform.Rotation *= offset;
         }
 
+        /// <summary>
+        /// Rotates the object by the given rotation in "world" space, AKA relative to the
+        /// world origin.
+        /// </summary>
+        /// <param name="offset">The offset to apply.</param>
         public void AddWorldRotation(Quaternion offset)
         {
             if (RootComponent == null)
             {
                 return;
             }
-            var worldRotation = GetWorldRotation();
-            RootComponent.Transform.Rotation = offset * worldRotation;
+            RootComponent.Transform.Rotation = offset * RootComponent.Transform.Rotation;
         }
         #endregion
 

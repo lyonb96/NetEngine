@@ -35,9 +35,7 @@
         /// <summary>
         /// Called to set this camera as the current active camera for this Pawn.
         /// </summary>
-        /// <param name="active">True to set this camera as active, false to disable it. True by default.</param>
-        /// <remarks>Passing in true will find and disable all other cameras on the pawn.</remarks>
-        public void SetActive(bool active = true)
+        public void SetActive()
         {
             if (Owner == null || Owner is not Pawn pawn)
             {
