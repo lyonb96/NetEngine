@@ -17,6 +17,27 @@
         public abstract PlayerController GeneratePlayerController();
 
         /// <summary>
+        /// Called when a new player joins the game. This will be called once for all connected players
+        /// when this game state is started.
+        /// </summary>
+        public void OnPlayerConnected()
+        {
+            // By default, generate a player controller for each one. Defer to the implementation on what
+            // else to do for a player connection.
+            var controller = GeneratePlayerController();
+            OnPlayerConnected(controller);
+        }
+
+        /// <summary>
+        /// Called when a new player joins the game and their controller has been generated. This will
+        /// be called once for all connected players when this game state is started.
+        /// </summary>
+        /// <param name="controller">The new player's controller.</param>
+        public virtual void OnPlayerConnected(PlayerController controller)
+        {
+        }
+
+        /// <summary>
         /// Called once when the game state begins ticking.
         /// </summary>
         public abstract void OnStartGameState();

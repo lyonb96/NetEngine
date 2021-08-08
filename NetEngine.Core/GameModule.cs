@@ -6,11 +6,13 @@
     using Utilities;
 
     /// <summary>
-    /// Implements the game module interface.
+    /// Serves as the base for a game implementation in NetEngine.
     /// </summary>
-    public abstract class GameModule : IGameModule
+    public abstract class GameModule
     {
-        /// <inheritdoc/>
+        /// <summary>
+        /// The name of the game. Displayed in the title bar.
+        /// </summary>
         public abstract string Name { get; }
 
         /// <summary>
@@ -23,10 +25,17 @@
         /// </summary>
         protected InputManager InputManager { get; private set; }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// The game's world instance.
+        /// </summary>
         protected World World { get; private set; }
 
-        /// <inheritdoc cref="IGameModule.InitializeModule(ISceneGraphNode, AssetManager, InputManager)"/>
+        /// <summary>
+        /// Initializes the game module with the given managers.
+        /// </summary>
+        /// <param name="root">The root of the scene.</param>
+        /// <param name="assetManager">The asset manager instance.</param>
+        /// <param name="inputManager">The input manager instance.</param>
         internal void InitializeModule(
             ISceneGraphNode root,
             AssetManager assetManager,
@@ -40,20 +49,11 @@
             InputManager = inputManager;
         }
 
-        /// <inheritdoc/>
-        void IGameModule.InitializeModule(
-            ISceneGraphNode root,
-            AssetManager assetManager,
-            InputManager inputManager)
-        {
-            InitializeModule(root, assetManager, inputManager);
-        }
-
         /// <summary>
         /// Gets the world instance.
         /// </summary>
         /// <returns>The world instance.</returns>
-        protected World GetWorld() => World;
+        public World GetWorld() => World;
 
         /// <summary>
         /// Gets the asset manager.
@@ -68,27 +68,39 @@
         protected InputManager GetInputManager() => InputManager;
 
         #region Logic Hooks
-        /// <inheritdoc/>
+        /// <summary>
+        /// Called just before the main loop has started, after engine startup is complete.
+        /// </summary>
         public abstract void OnGameStart();
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Called once each fixed logic step.
+        /// </summary>
         public abstract void FixedUpdate();
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Called once each rendered frame.
+        /// </summary>
         public abstract void Update();
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Called after the main loop has terminated, before engine shutdown has started.
+        /// </summary>
         public abstract void OnGameShutdown();
 
-        /// <inheritdoc/>
-        void IGameModule.OnUpdate()
+        /// <summary>
+        /// Updates the game module and the world instance.
+        /// </summary>
+        internal void OnUpdate()
         {
             Update();
             World.OnUpdate();
         }
 
-        /// <inheritdoc/>
-        void IGameModule.OnFixedUpdate()
+        /// <summary>
+        /// Calls fixed update on the game module and world instance.
+        /// </summary>
+        internal void OnFixedUpdate()
         {
             FixedUpdate();
             World.OnFixedUpdate();

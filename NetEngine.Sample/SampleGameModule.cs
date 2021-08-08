@@ -18,7 +18,7 @@
             GetInputManager().SetAxisBindingTrigger("MoveUp", Input.KEY_LCtrl, -1.0F);
             GetInputManager().SetAxisBindingTrigger("LookUp", Input.MOUSE_Axis_Y);
             GetInputManager().SetAxisBindingTrigger("LookRight", Input.MOUSE_Axis_X);
-            //GetWorld().SetGameState<SampleGameState>();
+            GetWorld().SetGameState<SampleGameState>();
         }
 
         public override void Update()

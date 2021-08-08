@@ -47,6 +47,7 @@
             // Build the renderer
             WindowRenderer = new Renderer(Context);
             WindowRenderer.Initialize();
+            CursorGrabbed = true;
 
             WindowInputHandler = new InputHandler();
             unsafe

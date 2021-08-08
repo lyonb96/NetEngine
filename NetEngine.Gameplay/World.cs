@@ -42,6 +42,11 @@
         private InputManager InputManager { get; set; }
 
         /// <summary>
+        /// The local player controller reference.
+        /// </summary>
+        private PlayerController localPlayerController;
+
+        /// <summary>
         /// Initializes the world instance.
         /// </summary>
         /// <param name="root">The scene graph's root node.</param>
@@ -71,6 +76,8 @@
         /// </summary>
         /// <returns>The input manager instance.</returns>
         public InputManager GetInputManager() => InputManager;
+
+        public PlayerController GetLocalPlayerController() => localPlayerController;
 
         /// <summary>
         /// Called by an object when its root component is changed.
@@ -146,28 +153,99 @@
         public TController CreateController<TController>()
             where TController : Controller, new()
         {
+            // Generate the controller
             var controller = new TController();
             controller.UniqueID = Guid.NewGuid();
             Controllers.Add(controller);
+            // Store a reference to the local player controller if none has been stored yet
+            if (controller is PlayerController pc && localPlayerController == null)
+            {
+                localPlayerController = pc;
+            }
             return controller;
+        }
+
+        public void OnObjectDestroyed(GameObject obj)
+        {
+            if (obj == null)
+            {
+                return;
+            }
+            if (obj.Parent != null)
+            {
+                // Detach from parent - TODO
+            }
+            if (obj.RootComponent != null)
+            {
+                var rootParent = obj.RootComponent.Parent;
+                if (rootParent != null)
+                {
+                    rootParent.DetachChild(obj.RootComponent);
+                }
+            }
+            Objects.Remove(obj);
         }
         #endregion
 
         #region State Management
         /// <summary>
-        /// Sets a new game state type (must be trivially constructible). This method
-        /// will call Stop on the current game state, if there is one.
+        /// Sets a new active game state type. This method will clear all objects in the world 
+        /// and call Stop on the current game state, if there is one.
         /// </summary>
         /// <typeparam name="TGameState">The type of game state to create and start.</typeparam>
         public void SetGameState<TGameState>()
             where TGameState : GameState, new()
         {
+            SetGameState(new TGameState());
+        }
+
+        /// <summary>
+        /// Constructs a new game state via the given factory, and sets it active. This method
+        /// will clear all objects in the world and call Stop on the current game state, if
+        /// there is one.
+        /// </summary>
+        /// <typeparam name="TGameState">The type of game state to create and start.</typeparam>
+        /// <param name="factory">The factory function to create the game state.</param>
+        public void SetGameState<TGameState>(Func<TGameState> factory)
+            where TGameState : GameState
+        {
+            SetGameState(factory());
+        }
+
+        /// <summary>
+        /// Sets the given game state instance to active, clears the world, and stops the current
+        /// game state if there is one.
+        /// </summary>
+        /// <param name="state">The new state to activate.</param>
+        private void SetGameState(GameState state)
+        {
             if (CurrentGameState != null)
             {
                 CurrentGameState.OnStopGameState();
             }
-            CurrentGameState = new TGameState();
+            ClearWorld();
+            CurrentGameState = state;
             CurrentGameState.OnStartGameState();
+            // Notify new game state of connected players
+            // For now, since no networking has been built out, just hard-code to tell it there's one player
+            CurrentGameState.OnPlayerConnected();
+        }
+
+        /// <summary>
+        /// Removes all objects and controllers from the world.
+        /// </summary>
+        private void ClearWorld()
+        {
+            foreach (var controller in Controllers)
+            {
+                controller.UnpossessPawn();
+            }
+            Controllers.Clear();
+            localPlayerController = null;
+            foreach (var obj in Objects)
+            {
+                obj.Destroy();
+            }
         }
         #endregion
 

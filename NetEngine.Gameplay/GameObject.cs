@@ -39,6 +39,15 @@
         }
 
         /// <summary>
+        /// Marks this game object for destruction.
+        /// </summary>
+        public void Destroy()
+        {
+            GetWorld().OnObjectDestroyed(this);
+        }
+
+        #region Component Management
+        /// <summary>
         /// Sets the root component of this game object.
         /// </summary>
         /// <param name="newRoot">The new component to set as the root.</param>
@@ -95,6 +104,7 @@
                 .Select(x => x as TComponent)
                 .ToList();
         }
+        #endregion
 
         #region Transform Accessors
         /// <summary>
@@ -199,6 +209,16 @@
                 return;
             }
             RootComponent.Transform.Rotation *= offset;
+        }
+
+        public void AddWorldRotation(Quaternion offset)
+        {
+            if (RootComponent == null)
+            {
+                return;
+            }
+            var worldRotation = GetWorldRotation();
+            RootComponent.Transform.Rotation = offset * worldRotation;
         }
         #endregion
 

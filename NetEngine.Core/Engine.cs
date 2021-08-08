@@ -17,7 +17,7 @@
         /// <summary>
         /// The game module to run.
         /// </summary>
-        private readonly IGameModule Game;
+        private readonly GameModule Game;
 
         /// <summary>
         /// The game window.
@@ -50,15 +50,10 @@
         private Stopwatch FixedUpdateStopwatch { get; set; }
 
         /// <summary>
-        /// Temporary camera set here for testing.
-        /// </summary>
-        private Camera Cam { get; set; }
-
-        /// <summary>
         /// Constructs the engine instance and stores the game module
         /// </summary>
         /// <param name="game">The game module to run.</param>
-        private Engine(IGameModule game)
+        private Engine(GameModule game)
         {
             Game = game;
             UpdateStopwatch = new Stopwatch();
@@ -98,15 +93,6 @@
                 RenderManager.GetRootNode(),
                 AssetManager,
                 InputManager);
-
-            // Test code
-            Cam = new Camera
-            {
-                Position = new Vector3(0.0F, 0.0F, 8.0F),
-                Direction = -Vector3.UnitZ,
-                Up = Vector3.UnitY,
-                FieldOfView = 70.0F
-            };
 
             // Call game start
             Game.OnGameStart();
@@ -187,8 +173,14 @@
         private void HandleRenderUpdate()
         {
             // Determine current active camera
-            // For now this is just hard coded
-            var activeCam = Cam;
+            var activeCam = Game.GetWorld().GetLocalPlayerController()?.GetActiveCamera()
+                ?? new Camera
+                {
+                    Position = Vector3.Zero,
+                    Direction = Vector3.UnitZ,
+                    Up = Vector3.UnitY,
+                    FieldOfView = 70.0F,
+                };
             RenderManager.DrawFrame(activeCam);
         }
 
@@ -197,7 +189,7 @@
         /// </summary>
         /// <typeparam name="TGameModule">The game module to run.</typeparam>
         public static void InitializeEngine<TGameModule>()
-            where TGameModule : IGameModule, new()
+            where TGameModule : GameModule, new()
         {
             var instance = new Engine(new TGameModule());
             instance.Initialize();

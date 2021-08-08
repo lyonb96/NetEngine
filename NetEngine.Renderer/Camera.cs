@@ -40,10 +40,7 @@
         /// <returns>The view matrix for this camera.</returns>
         internal Matrix4 GetViewMatrix()
         {
-            var forward = Vector3.Normalize(Position);
-            var right = Vector3.Normalize(Vector3.Cross(Up, forward));
-            var up = Vector3.Cross(forward, right);
-            return Matrix4.LookAt(Position, Position + Direction, up);
+            return Matrix4.LookAt(Position, Position + Direction, Up);
         }
 
         /// <summary>

@@ -39,7 +39,7 @@
         public Matrix4 ToMatrix4()
         {
             // TODO: This can almost certainly be optimized...
-            return Matrix4.CreateTranslation(Position) * Matrix4.CreateFromQuaternion(Rotation) * Matrix4.CreateScale(Scale);
+            return Matrix4.CreateFromQuaternion(Rotation) * Matrix4.CreateTranslation(Position) * Matrix4.CreateScale(Scale);
         }
     }
 }

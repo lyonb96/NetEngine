@@ -87,16 +87,12 @@
                         Position = CurrentPawn.GetWorldLocation(),
                         Direction = CurrentPawn.GetForwardAxis(),
                         Up = CurrentPawn.GetUpAxis(),
+                        FieldOfView = 70.0F,
                     };
                 }
                 CurrentCamera = camera;
             }
-            return new Camera
-            {
-                Position = CurrentCamera.GetWorldLocation(),
-                Direction = CurrentCamera.GetForwardAxis(),
-                Up = CurrentCamera.GetUpAxis(),
-            };
+            return CurrentCamera.GetCamera();
         }
     }
 }
